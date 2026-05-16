@@ -53,7 +53,7 @@ See [Skill Installation](./skills/tweet-scorer/INSTALL.md) for setup.
 - **Backend**: Next.js API Routes (serverless)
 - **AI Engines**:
   - Cloud: Anthropic Claude 3.5 Sonnet
-  - Local: Ollama (gemma4, mistral, or compatible models)
+  - Local: Ollama (gemma4, kimi-k2.5, glm-5.1, qwen3.5 or compatible models)
 - **Hosting**: Vercel, self-hosted Node.js, or Docker
 
 ---
