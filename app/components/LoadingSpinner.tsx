@@ -1,3 +1,5 @@
+'use client';
+
 export function LoadingSpinner() {
   return (
     <div className="w-full max-w-2xl mx-auto mt-8">
