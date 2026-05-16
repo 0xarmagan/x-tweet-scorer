@@ -342,7 +342,7 @@ Return JSON with:
     "Recommendation 2",
     "Recommendation 3: Include point improvement estimate (e.g., '+15 if you add...')"
   ],
-  "reasoning": "Why this score. Which 15-action predictions are strongest/weakest. Trend alignment if relevant."
+  "reasoning": "2-3 sentences max. State the score driver (e.g. 'Strong retweet potential from specific data'). Name one strength and one weakness. Plain language, no bullet points, no markdown."
 }
 
 Focus on: retweet potential (*20), reply potential (*13.5), quote potential (*18) — these carry 60% of engagement weight.
