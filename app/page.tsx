@@ -39,6 +39,11 @@ export default function Home() {
     }
   };
 
+  const provider = process.env.NEXT_PUBLIC_LLM_PROVIDER ?? 'ollama';
+  const providerLabel = provider === 'claude'
+    ? 'Claude API'
+    : `Ollama (${process.env.NEXT_PUBLIC_OLLAMA_MODEL ?? 'mistral'})`;
+
   return (
     <main className="min-h-screen bg-white">
       {/* Header */}
@@ -74,7 +79,7 @@ export default function Home() {
       <footer className="border-t border-slate-200 py-6 mt-12">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <p className="text-gray-600 text-sm">
-            Powered by Claude API ·{' '}
+            Powered by {providerLabel} ·{' '}
             <a
               href="https://github.com/xai-org/x-algorithm"
               target="_blank"
