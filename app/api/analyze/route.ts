@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { analyzeTweet } from '@/lib/claude';
+import { analyzeTweet } from '@/lib/llm';
 import { AnalysisRequest } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
