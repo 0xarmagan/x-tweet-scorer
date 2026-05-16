@@ -37,6 +37,14 @@ This tool implements **X's open-source Phoenix transformer algorithm** (released
 - **Anthropic Claude API** (cloud, recommended for production)
 - **Ollama** (local, free, privacy-respecting)
 
+### Alternative: Claude Code Skill
+Use X Tweet Scorer directly in Claude Code IDE without leaving your development environment:
+- **Quick mode**: `/tweet-score "your tweet here"` — instant score + recommendations
+- **Interactive mode**: `/tweet-score` — explore details, variations, and iterate
+- **Detailed breakdown**: `/tweet-score-detail "your tweet"` — all 15 signals with per-action tips
+
+See [Skill Installation](./skills/tweet-scorer/INSTALL.md) for setup.
+
 ---
 
 ## Tech Stack
@@ -210,6 +218,11 @@ x-tweet-scorer/
 │   │   ├── claude.ts                 # Claude API provider
 │   │   └── ollama.ts                 # Ollama local provider
 │   └── llm.ts                        # Provider factory + analyzeTweet
+├── skills/
+│   ├── SKILL.md                      # Skill metadata + commands
+│   └── tweet-scorer/
+│       ├── handler.ts                # Skill implementation (CLI handler)
+│       └── INSTALL.md                # Skill installation guide
 ├── public/
 │   └── favicon.ico
 ├── .env.local                        # Configuration (ignored in git)
@@ -342,6 +355,43 @@ Score: 82/100 (Good)
    - Dwell time estimate
    - Trend alignment score
 
+### Claude Code Skill (IDE Integration)
+
+**Quick Analysis:**
+```bash
+/tweet-score "Just shipped a feature that cuts API latency by 40%"
+```
+
+Output:
+```
+═══════════════════════════════════════
+ENGAGEMENT SCORE: 84/100
+GOOD
+═══════════════════════════════════════
+
+💡 Analysis:
+The tweet has strong specificity with concrete metrics...
+
+✅ Recommendations:
+1. Add question to boost replies (+10)
+2. Include link to implementation details (+8)
+3. Mention user impact metric (+5)
+```
+
+**Interactive Mode:**
+```bash
+/tweet-score
+```
+
+Explore variations, detailed breakdowns, and iterate until satisfied.
+
+**Detailed Breakdown:**
+```bash
+/tweet-score-detail "Your tweet text"
+```
+
+See all 15 engagement signals with individual scores and per-signal recommendations.
+
 ---
 
 ## Keyboard Shortcuts
@@ -432,6 +482,48 @@ Analyze a tweet using the official X algorithm.
 ❌ Spam/repetition → -25 points  
 ❌ Self-promo only → -10 points  
 ❌ Harassment/misinformation → -70% (hard filter)
+
+---
+
+## Claude Code Skill Installation
+
+### Quick Install
+
+1. **Copy skill to Claude Code**
+```bash
+cp -r skills/tweet-scorer ~/.claude/skills/
+```
+
+2. **Ensure the API is running**
+```bash
+npm run dev
+```
+
+3. **Test in Claude Code**
+```
+/tweet-score "test tweet here"
+```
+
+### Commands
+
+| Command | Usage | Mode |
+|---------|-------|------|
+| `/tweet-score "text"` | Analyze tweet in quick mode | Quick (3-5 tips) |
+| `/tweet-score` | Interactive analysis with menu | Explore & iterate |
+| `/tweet-score-detail "text"` | Show all 15 signals | Full breakdown |
+
+### Configuration
+
+The skill connects to `http://localhost:3000/api/analyze` by default.
+
+To use a custom endpoint:
+```bash
+export TWEET_SCORER_API="https://your-app.vercel.app/api/analyze"
+```
+
+Supports both Claude API and Ollama — uses the same `.env.local` configuration as the web app.
+
+For detailed setup, see [Skill Installation Guide](./skills/tweet-scorer/INSTALL.md).
 
 ---
 
