@@ -13,7 +13,9 @@ Analyze how your tweets align with X's algorithm. Get an engagement score (0-100
 
 - **Frontend**: Next.js 15, React 18, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes (serverless)
-- **AI**: Anthropic Claude 3.5 Sonnet
+- **AI**: 
+  - Cloud: Anthropic Claude 3.5 Sonnet
+  - Local: Ollama (gemma2, mistral, or other compatible models)
 - **Hosting**: Vercel (recommended) or self-hosted Node.js
 
 ## Getting Started
@@ -21,7 +23,9 @@ Analyze how your tweets align with X's algorithm. Get an engagement score (0-100
 ### Prerequisites
 
 - Node.js 20+
-- Anthropic API key (get one at https://console.anthropic.com)
+- **Either:**
+  - Anthropic API key (get one at https://console.anthropic.com), OR
+  - Ollama installed locally (https://ollama.ai) with a model like gemma2 or mistral
 
 ### Installation
 
@@ -36,9 +40,27 @@ cd x-tweet-scorer
 npm install
 ```
 
-3. Create `.env.local` and add your API key
+3. Create `.env.local` with your configuration
+
+**Option A: Use Anthropic Claude (Cloud)**
 ```bash
-echo "ANTHROPIC_API_KEY=your_key_here" > .env.local
+cat > .env.local << EOF
+LLM_PROVIDER=claude
+ANTHROPIC_API_KEY=your_key_here
+EOF
+```
+
+**Option B: Use Ollama (Local)**
+```bash
+# First, pull a model (e.g., gemma2, mistral)
+ollama pull gemma2:latest
+
+# Then create .env.local
+cat > .env.local << EOF
+LLM_PROVIDER=ollama
+OLLAMA_MODEL=gemma2
+OLLAMA_BASE_URL=http://localhost:11434
+EOF
 ```
 
 4. Run development server
@@ -46,22 +68,33 @@ echo "ANTHROPIC_API_KEY=your_key_here" > .env.local
 npm run dev
 ```
 
-5. Open http://localhost:3000
+5. If using Ollama, start it in another terminal:
+```bash
+ollama serve
+```
+
+6. Open http://localhost:3000
 
 ### Deployment
 
-**Deploy to Vercel (recommended):**
+**Deploy to Vercel (Cloud - Claude only):**
 
 1. Push code to GitHub
 2. Connect repo to Vercel
-3. Add `ANTHROPIC_API_KEY` environment variable in Vercel dashboard
+3. Add `LLM_PROVIDER=claude` and `ANTHROPIC_API_KEY` environment variables in Vercel dashboard
 4. Deploy
 
-**Self-hosted:**
+**Self-hosted with Node.js (supports both Claude and Ollama):**
 
 ```bash
 npm run build
 npm run start
+```
+
+**Docker (with Ollama):**
+
+```bash
+# Include Ollama in your docker-compose or deploy with both services
 ```
 
 ## Project Structure
@@ -85,7 +118,9 @@ lib/
 1. User pastes a tweet
 2. Frontend sends to `/api/analyze`
 3. Backend constructs prompt aligned with X algorithm principles
-4. Claude analyzes and returns engagement signals
+4. AI analyzes and returns engagement signals:
+   - Uses Claude (via Anthropic API) if `LLM_PROVIDER=claude`
+   - Uses local Ollama model if `LLM_PROVIDER=ollama`
 5. Frontend displays score + recommendations
 
 ## Future Features
@@ -103,3 +138,5 @@ MIT
 
 - [X Algorithm GitHub](https://github.com/xai-org/x-algorithm)
 - [Anthropic Claude API](https://docs.anthropic.com)
+- [Ollama](https://ollama.ai)
+- [Gemma Models](https://ai.google.dev/gemma)
