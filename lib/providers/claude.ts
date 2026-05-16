@@ -14,7 +14,7 @@ export class ClaudeProvider implements LLMProvider {
   async analyze(request: AnalysisRequest): Promise<AnalysisResult> {
     const message = await this.client.messages.create({
       model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 2000,
+      max_tokens: request.mode === 'detailed' ? 4000 : 2000,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: buildUserPrompt(request.mode, request.tweet_text) }],
     });

@@ -410,6 +410,7 @@ overall_score = min(100, max(0,
 Return JSON:
 {
   "overall_score": 0-100,
+  "reasoning": "2-3 sentences. State the main score driver, one key strength, one key weakness. Plain language, no bullets.",
   "signals": {
     "like_potential": P_like (*1),
     "reply_potential": P_reply (*13.5),
@@ -449,7 +450,6 @@ Return JSON:
     "P_reply": "...",
     ... (all action types with improvement paths)
   },
-  "reasoning": "Overall assessment. Which actions are strong (retweets, quotes?). Which weak? Trend alignment. Safety concerns if any. What sequence pattern and dwell time to expect."
 }
 
 Remember: Official X weights show retweet (*20), quote (*18), share (*15) are top priorities. Focus recommendations there. Include point improvement estimates.
