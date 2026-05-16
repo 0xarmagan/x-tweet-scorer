@@ -35,7 +35,7 @@ export class OllamaProvider implements LLMProvider {
     try {
       return JSON.parse(text) as AnalysisResult;
     } catch {
-      throw new Error('Invalid JSON response from Ollama. Try a more capable model.');
+      throw new Error(`Ollama returned non-JSON response. Check that "${this.model}" supports JSON mode, or try a different model.`);
     }
   }
 }

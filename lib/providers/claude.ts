@@ -23,7 +23,7 @@ export class ClaudeProvider implements LLMProvider {
     try {
       return JSON.parse(text) as AnalysisResult;
     } catch {
-      throw new Error('Invalid JSON response from Claude');
+      throw new Error(`Claude returned non-JSON response. Raw: ${text.slice(0, 100)}`);
     }
   }
 }

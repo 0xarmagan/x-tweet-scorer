@@ -7,21 +7,28 @@ export interface EngagementSignals {
   like_potential: number;
   reply_potential: number;
   repost_potential: number;
+  quote_potential: number;
+  share_potential: number;
   click_potential: number;
+  profile_click_potential: number;
   video_potential: number;
+  dwell_time_potential: number;
+  follow_potential: number;
+  bookmark_potential: number;
+  photo_engagement: number;
+}
+
+export interface NegativeSignals {
+  not_interested_risk: number;
+  mute_risk: number;
+  block_risk: number;
 }
 
 export interface ContentQuality {
   hook_strength: number;
   clarity: number;
   specificity: number;
-  call_to_action: number;
-}
-
-export interface AlgorithmicFit {
-  candidate_isolation: number;
-  newsworthiness: number;
-  safety: number;
+  authenticity: number;
 }
 
 export interface SimpleRecommendations {
@@ -32,8 +39,8 @@ export interface SimpleRecommendations {
 
 export interface DetailedAnalysis extends SimpleRecommendations {
   signals: EngagementSignals;
+  negative_signals: NegativeSignals;
   content_quality: ContentQuality;
-  algorithmic_fit: AlgorithmicFit;
   detailed_recommendations: Record<string, string>;
 }
 

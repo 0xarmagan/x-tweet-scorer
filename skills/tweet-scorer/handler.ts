@@ -181,7 +181,7 @@ async function interactiveAnalyze(): Promise<void> {
 
     // Analyze
     console.log(`\n${colors.blue}Analyzing...${colors.reset}\n`);
-    const analysis = await analyzeTweet(tweet, 'detailed');
+    const analysis = await analyzetweet(tweet, 'detailed');
     console.log(displayAnalysis(analysis, true));
 
     // Interactive options
