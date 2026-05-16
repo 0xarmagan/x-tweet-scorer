@@ -15,7 +15,7 @@ Analyze how your tweets align with X's algorithm. Get an engagement score (0-100
 - **Backend**: Next.js API Routes (serverless)
 - **AI**: 
   - Cloud: Anthropic Claude 3.5 Sonnet
-  - Local: Ollama (gemma2, mistral, or other compatible models)
+  - Local: Ollama (gemma4, Kimi, or other compatible models)
 - **Hosting**: Vercel (recommended) or self-hosted Node.js
 
 ## Getting Started
