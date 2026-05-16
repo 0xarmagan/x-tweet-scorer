@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# X Tweet Scorer
+
+Analyze how your tweets align with X's algorithm. Get an engagement score (0-100) and actionable recommendations.
+
+## Features
+
+- **Tweet Analysis**: Paste any tweet and get instant feedback
+- **Engagement Scoring**: 0-100 score based on like/reply/repost potential
+- **Actionable Tips**: Quick, concrete recommendations to improve engagement
+- **Simple UI**: Clean, fast interface for rapid iteration
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 18, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes (serverless)
+- **AI**: Anthropic Claude 3.5 Sonnet
+- **Hosting**: Vercel (recommended) or self-hosted Node.js
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 20+
+- Anthropic API key (get one at https://console.anthropic.com)
+
+### Installation
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repo-url>
+cd x-tweet-scorer
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Create `.env.local` and add your API key
+```bash
+echo "ANTHROPIC_API_KEY=your_key_here" > .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run development server
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+### Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Deploy to Vercel (recommended):**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Push code to GitHub
+2. Connect repo to Vercel
+3. Add `ANTHROPIC_API_KEY` environment variable in Vercel dashboard
+4. Deploy
 
-## Deploy on Vercel
+**Self-hosted:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+npm run start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+app/
+├── page.tsx                 # Main page
+├── layout.tsx               # Root layout
+├── api/analyze/route.ts    # Claude API endpoint
+└── components/
+    ├── TweetInput.tsx       # Input form
+    ├── ScoreCard.tsx        # Results display
+    └── LoadingSpinner.tsx   # Loading state
+lib/
+├── claude.ts                # Claude API client
+└── types.ts                 # TypeScript interfaces
+```
+
+## How It Works
+
+1. User pastes a tweet
+2. Frontend sends to `/api/analyze`
+3. Backend constructs prompt aligned with X algorithm principles
+4. Claude analyzes and returns engagement signals
+5. Frontend displays score + recommendations
+
+## Future Features
+
+- Detailed mode with signal-by-signal breakdown
+- Comparison against high-performing tweets
+- Batch analysis of multiple tweets
+- Export results as JSON
+
+## License
+
+MIT
+
+## References
+
+- [X Algorithm GitHub](https://github.com/xai-org/x-algorithm)
+- [Anthropic Claude API](https://docs.anthropic.com)
