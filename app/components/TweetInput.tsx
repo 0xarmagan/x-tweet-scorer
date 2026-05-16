@@ -13,6 +13,7 @@ interface TweetInputProps {
 export function TweetInput({ onSubmit, isLoading }: TweetInputProps) {
   const [tweet, setTweet] = useState('');
   const [mode, setMode] = useState<'simple' | 'detailed'>('simple');
+  const [showInfo, setShowInfo] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -36,6 +37,40 @@ export function TweetInput({ onSubmit, isLoading }: TweetInputProps) {
   const isOverLimit = tweet.length > CHAR_LIMIT;
 
   return (
+    <div className="w-full">
+      {/* How it works panel */}
+      <div className="mb-6">
+        <button
+          type="button"
+          onClick={() => setShowInfo(!showInfo)}
+          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+        >
+          <span>{showInfo ? '▾' : '▸'}</span>
+          How does this work?
+        </button>
+
+        {showInfo && (
+          <div className="mt-3 p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-gray-600 space-y-3">
+            <p>
+              <span className="font-semibold text-gray-800">What it does:</span> Scores your tweet (0–100) by predicting how X's algorithm would rank it — based on the official open-source Phoenix transformer model.
+            </p>
+            <p>
+              <span className="font-semibold text-gray-800">How scoring works:</span> The algorithm predicts 15 user actions (retweet, reply, quote, bookmark, etc.) and applies official engagement weights. Retweets carry the most weight (×20), followed by quotes (×18) and shares (×15). Negative signals like mutes and blocks suppress the score.
+            </p>
+            <div>
+              <span className="font-semibold text-gray-800">Two modes:</span>
+              <ul className="mt-1 ml-4 space-y-1 list-disc">
+                <li><span className="font-medium">Simple</span> — overall score + 3–5 actionable tips</li>
+                <li><span className="font-medium">Detailed</span> — all 15 signals with individual scores, risk signals, and per-action recommendations</li>
+              </ul>
+            </div>
+            <p className="text-xs text-gray-400">
+              Source: <a href="https://github.com/xai-org/x-algorithm" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">github.com/xai-org/x-algorithm</a> (May 2026)
+            </p>
+          </div>
+        )}
+      </div>
+
     <form onSubmit={handleSubmit} className="w-full">
       <div className="mb-4">
         <p className="text-sm font-medium text-gray-700 mb-2">Analysis Mode</p>
@@ -112,5 +147,6 @@ export function TweetInput({ onSubmit, isLoading }: TweetInputProps) {
         )}
       </button>
     </form>
+    </div>
   );
 }
