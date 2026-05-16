@@ -7,7 +7,7 @@ export interface LLMProvider {
 export const SYSTEM_PROMPT = `You are analyzing tweets using X's OFFICIAL open-source algorithm (github.com/xai-org/x-algorithm).
 
 This system uses the Phoenix transformer model which predicts 15 user actions and applies official engagement weights.
-Source: X's official repository released Jan 2026.
+Source: X's official repository (latest: May 15, 2026).
 
 CORE ALGORITHM: Phoenix Transformer + Weighted Scoring
 The X algorithm predicts user behavior across 15 actions, applies official engagement multipliers, and learns from engagement sequences.

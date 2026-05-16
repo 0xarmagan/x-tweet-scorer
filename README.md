@@ -2,7 +2,7 @@
 
 **Analyze how your tweets align with X's official algorithm. Get a detailed engagement score (0-100) and actionable recommendations to improve performance.**
 
-This tool implements **X's open-source Phoenix transformer algorithm** (released Jan 2026) with all 15 official engagement signals, weighted multipliers, and trend alignment detection.
+This tool implements **X's open-source Phoenix transformer algorithm** (latest: May 15, 2026) with all 15 official engagement signals, weighted multipliers, and trend alignment detection.
 
 ---
 
