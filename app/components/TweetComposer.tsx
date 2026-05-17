@@ -91,7 +91,95 @@ export function TweetComposer({ onSubmit, isLoading }: TweetComposerProps) {
   const hasMedia = mediaFile !== null;
 
   if (step === 'preview') {
-    return null; // replaced in Task 2
+    const formatOption = FORMAT_OPTIONS.find((f) => f.value === format);
+    return (
+      <div className="w-full space-y-4">
+        <div>
+          <p className="text-sm font-medium text-gray-700 mb-3">Your Tweet Preview</p>
+          <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
+            <div className="p-4">
+              <div className="flex gap-3">
+                <div className="w-10 h-10 rounded-full bg-slate-200 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-bold text-sm text-gray-900">Your Name</span>
+                    <span className="text-sm text-gray-400">@yourhandle · now</span>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-900 leading-relaxed whitespace-pre-wrap">
+                    {tweet}
+                  </p>
+                </div>
+              </div>
+
+              {mediaUrl && (
+                <div className="mt-3">
+                  {format === 'video' ? (
+                    <video
+                      src={mediaUrl}
+                      controls
+                      className="rounded-xl w-full max-h-64 object-cover"
+                    />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={mediaUrl}
+                      alt="tweet media"
+                      className="rounded-xl w-full object-cover max-h-64"
+                    />
+                  )}
+                </div>
+              )}
+
+              <div className="flex gap-5 mt-3 text-gray-400 text-sm">
+                <span>💬</span>
+                <span>🔁</span>
+                <span>❤️</span>
+                <span>🔖</span>
+                <span>↗️</span>
+              </div>
+            </div>
+
+            <div className="px-4 py-2.5 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
+              <span className="text-xs text-gray-500">
+                Format: <strong className="text-gray-700">{formatOption?.icon} {formatOption?.label}</strong>
+              </span>
+              <button
+                type="button"
+                onClick={() => setStep('compose')}
+                className="text-xs text-blue-500 hover:text-blue-700"
+              >
+                change ↗
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setStep('compose')}
+            className="flex-1 border border-gray-200 text-gray-600 font-medium py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+          >
+            ← Edit
+          </button>
+          <button
+            type="button"
+            onClick={() => onSubmit(tweet, mode, format)}
+            disabled={isLoading}
+            className="flex-1 bg-blue-600 text-white font-medium py-2.5 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors text-sm"
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Analyzing...
+              </span>
+            ) : (
+              'Analyze Tweet ✦'
+            )}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
