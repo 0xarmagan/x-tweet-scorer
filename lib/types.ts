@@ -1,6 +1,9 @@
+export type TweetFormat = 'text' | 'image' | 'video' | 'article' | 'poll' | 'gif' | 'thread';
+
 export interface AnalysisRequest {
   tweet_text: string;
   mode: 'simple' | 'detailed';
+  format: TweetFormat;
 }
 
 export interface EngagementSignals {
