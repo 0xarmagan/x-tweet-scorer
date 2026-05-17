@@ -57,14 +57,13 @@ export function TweetComposer({ onSubmit, isLoading }: TweetComposerProps) {
   }, [mediaUrl]);
 
   const attachFile = useCallback((file: File) => {
-    if (mediaUrl) URL.revokeObjectURL(mediaUrl);
+    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) return;
     setMediaFile(file);
     setMediaUrl(URL.createObjectURL(file));
     setFormat(detectFormat(file));
-  }, [mediaUrl]);
+  }, []);
 
   const removeMedia = () => {
-    if (mediaUrl) URL.revokeObjectURL(mediaUrl);
     setMediaFile(null);
     setMediaUrl(null);
     setFormat('text');
@@ -83,7 +82,7 @@ export function TweetComposer({ onSubmit, isLoading }: TweetComposerProps) {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && tweet.trim()) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && tweet.trim() && !isOverLimit && !isLoading) {
       setStep('preview');
     }
   };
@@ -193,8 +192,9 @@ export function TweetComposer({ onSubmit, isLoading }: TweetComposerProps) {
           {hasMedia ? (
             <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg bg-gray-50">
               {format === 'video' ? (
-                <video src={mediaUrl ?? undefined} className="w-16 h-16 rounded object-cover" />
+                <video src={mediaUrl ?? undefined} controls muted playsInline className="w-16 h-16 rounded object-cover" />
               ) : (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={mediaUrl ?? undefined} alt="media preview" className="w-16 h-16 rounded object-cover" />
               )}
               <div className="flex-1 min-w-0">
@@ -256,6 +256,7 @@ export function TweetComposer({ onSubmit, isLoading }: TweetComposerProps) {
                   type="button"
                   onClick={() => { if (!isDisabled) setFormat(value); }}
                   disabled={isDisabled}
+                  title={isDisabled ? 'Auto-detected from file' : undefined}
                   className={`px-3 py-1.5 text-sm font-medium rounded-full border transition-colors ${
                     format === value
                       ? 'bg-blue-600 text-white border-blue-600'
