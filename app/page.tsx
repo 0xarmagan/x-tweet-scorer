@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { TweetInput } from './components/TweetInput';
+import { TweetComposer } from './components/TweetComposer';
 import { ScoreCard } from './components/ScoreCard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { AnalysisResult, TweetFormat } from '@/lib/types';
@@ -78,7 +78,7 @@ export default function Home() {
 
       <div className="max-w-2xl mx-auto px-4 py-12">
         {!result && !loading && (
-          <TweetInput onSubmit={handleAnalyze} isLoading={loading} />
+          <TweetComposer onSubmit={handleAnalyze} isLoading={loading} />
         )}
 
         {loading && <LoadingSpinner onCancel={handleCancel} />}
