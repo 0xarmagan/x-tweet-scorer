@@ -1,11 +1,10 @@
-import { TweetFormat } from '../types';
-import { AnalysisRequest, AnalysisResult } from '../types';
+import { TweetFormat, AnalysisRequest, AnalysisResult } from '../types';
 
 export interface LLMProvider {
   analyze(request: AnalysisRequest): Promise<AnalysisResult>;
 }
 
-export function getFormatContext(format: TweetFormat): string {
+export function getFormatContext(format: TweetFormat = 'text'): string {
   const contexts: Record<TweetFormat, string> = {
     text: `TWEET FORMAT: text
 Format scoring context:
