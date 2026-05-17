@@ -70,7 +70,7 @@ export default function Home() {
             X Tweet Scorer
           </h1>
           <p className="text-gray-600">
-            Analyze how your tweets align with X's algorithm. Get an engagement
+            Analyze how your tweets align with X&apos;s algorithm. Get an engagement
             score and actionable recommendations.
           </p>
         </div>

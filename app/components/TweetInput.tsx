@@ -64,7 +64,7 @@ export function TweetInput({ onSubmit, isLoading }: TweetInputProps) {
         {showInfo && (
           <div className="mt-3 p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-gray-600 space-y-3">
             <p>
-              <span className="font-semibold text-gray-800">What it does:</span> Scores your tweet (0–100) by predicting how X's algorithm would rank it — based on the official open-source Phoenix transformer model.
+              <span className="font-semibold text-gray-800">What it does:</span> Scores your tweet (0–100) by predicting how X&apos;s algorithm would rank it — based on the official open-source Phoenix transformer model.
             </p>
             <p>
               <span className="font-semibold text-gray-800">How scoring works:</span> The algorithm predicts 15 user actions (retweet, reply, quote, bookmark, etc.) and applies official engagement weights. Retweets carry the most weight (×20), followed by quotes (×18) and shares (×15). Negative signals like mutes and blocks suppress the score.
