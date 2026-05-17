@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeTweet } from '@/lib/llm';
-import { AnalysisRequest } from '@/lib/types';
+import { AnalysisRequest, TweetFormat } from '@/lib/types';
+
+const VALID_FORMATS: TweetFormat[] = ['text', 'image', 'video', 'article', 'poll', 'gif', 'thread'];
 
 export async function POST(request: NextRequest) {
   try {
-    const body: AnalysisRequest = await request.json();
+    const body = await request.json();
 
     if (!body.tweet_text || !body.mode) {
       return NextResponse.json(
@@ -27,8 +29,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await analyzeTweet(body);
+    const analysisRequest: AnalysisRequest = {
+      tweet_text: body.tweet_text,
+      mode: body.mode,
+      format: VALID_FORMATS.includes(body.format) ? body.format : 'text',
+    };
 
+    const result = await analyzeTweet(analysisRequest);
     return NextResponse.json(result);
   } catch (error) {
     console.error('API error:', error);

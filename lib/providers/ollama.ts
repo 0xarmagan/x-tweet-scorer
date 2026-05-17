@@ -18,7 +18,7 @@ export class OllamaProvider implements LLMProvider {
         model: this.model,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: buildUserPrompt(request.mode, request.tweet_text) },
+          { role: 'user', content: buildUserPrompt(request.mode, request.tweet_text, request.format) },
         ],
         stream: false,
         format: 'json',

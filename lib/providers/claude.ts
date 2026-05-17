@@ -16,7 +16,7 @@ export class ClaudeProvider implements LLMProvider {
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: request.mode === 'detailed' ? 4000 : 2000,
       system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: buildUserPrompt(request.mode, request.tweet_text) }],
+      messages: [{ role: 'user', content: buildUserPrompt(request.mode, request.tweet_text, request.format) }],
     });
 
     const text = message.content[0].type === 'text' ? message.content[0].text : '';

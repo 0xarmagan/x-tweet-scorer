@@ -1,7 +1,76 @@
-import { AnalysisRequest, AnalysisResult } from '../types';
+import { TweetFormat, AnalysisRequest, AnalysisResult } from '../types';
 
 export interface LLMProvider {
   analyze(request: AnalysisRequest): Promise<AnalysisResult>;
+}
+
+export function getFormatContext(format: TweetFormat = 'text'): string {
+  const contexts: Record<TweetFormat, string> = {
+    text: `TWEET FORMAT: text
+Format scoring context:
+- Text-only tweet. No media attached.
+- P_photo_expand (*8): Not applicable — score 0
+- P_video_view (*14): Not applicable — score 0
+- P_dwell_time (*6): Depends entirely on copy quality and length`,
+
+    image: `TWEET FORMAT: image
+Format scoring context:
+- This tweet has 1–4 images attached.
+- P_photo_expand (*8): Definitely activated — score based on image relevance and visual quality
+- P_video_view (*14): Not applicable — score 0
+- P_dwell_time (*6): Higher baseline; users stop to view images
+- P_share (*15): Images get ~2× more shares than text tweets — adjust upward`,
+
+    video: `TWEET FORMAT: video
+Format scoring context:
+- This tweet has a video attached.
+- P_video_view (*14): Definitely activated — score based on topic relevance and hook quality
+- P_photo_expand (*8): Not applicable — score 0
+- P_dwell_time (*6): Higher baseline; users stop to watch
+- P_share (*15): Videos get ~3× more shares than text tweets — adjust upward
+- P_not_interested (*-5): Higher risk if video appears low quality or misleading`,
+
+    article: `TWEET FORMAT: article
+Format scoring context:
+- This is an X Article (long-form content linked from the tweet).
+- P_link_click (*11): Definitely activated — article tweets drive strong click intent
+- P_dwell_time (*6): Very high baseline; readers commit significant time
+- P_bookmark (*10): Elevated — articles are saved for later reading
+- P_retweet (*20): Strong if article provides unique insight or original data
+- P_photo_expand (*8): Not applicable — score 0
+- P_video_view (*14): Not applicable — score 0`,
+
+    poll: `TWEET FORMAT: poll
+Format scoring context:
+- This tweet has a poll attached.
+- P_reply (*13.5): Elevated; polls generate discussion around results
+- P_dwell_time (*6): High; users stop to read options and vote
+- P_like (*1): Often lower than average; users vote instead of liking
+- P_share (*15): Below average; polls are harder to share outside X
+- P_photo_expand (*8): Not applicable — score 0
+- P_video_view (*14): Not applicable — score 0`,
+
+    gif: `TWEET FORMAT: gif
+Format scoring context:
+- This tweet has an animated GIF attached. Treat as animated image.
+- P_photo_expand (*8): Definitely activated — score based on GIF relevance, humor, or emotion
+- P_video_view (*14): Not applicable — score 0
+- P_dwell_time (*6): Moderate boost; GIFs loop and hold attention briefly
+- P_share (*15): High if GIF is funny, relatable, or culturally relevant
+- P_not_interested (*-5): Higher risk if GIF feels low-effort or spammy`,
+
+    thread: `TWEET FORMAT: thread
+Format scoring context:
+- This is the first tweet of a thread.
+- P_follow_author (*9): Elevated; threads signal expertise and depth
+- P_profile_click (*12): Elevated; readers want to learn more about the author
+- P_dwell_time (*6): Highest baseline of all formats; readers commit to the full thread
+- P_bookmark (*10): High; threads are saved to read later
+- P_retweet (*20): Strong if thread tells a compelling story or shares exclusive knowledge
+- P_reply (*13.5): Strong once readers have finished the full thread`,
+  };
+
+  return contexts[format];
 }
 
 export const SYSTEM_PROMPT = `You are analyzing tweets using X's OFFICIAL open-source algorithm (github.com/xai-org/x-algorithm).
@@ -315,9 +384,12 @@ For DETAILED mode:
 RESPONSE FORMAT:
 Always respond with valid JSON only. No markdown, no extra text, no explanation outside JSON.`;
 
-export function buildUserPrompt(mode: 'simple' | 'detailed', tweet_text: string): string {
+export function buildUserPrompt(mode: 'simple' | 'detailed', tweet_text: string, format: TweetFormat = 'text'): string {
+  const formatContext = getFormatContext(format);
   if (mode === 'simple') {
-    return `SIMPLE MODE - X ALGORITHM ANALYSIS (OFFICIAL):
+    return `${formatContext}
+
+SIMPLE MODE - X ALGORITHM ANALYSIS (OFFICIAL):
 
 Analyze this tweet using X's Phoenix transformer model (15 actions, official weights).
 
@@ -349,7 +421,9 @@ Focus on: retweet potential (*20), reply potential (*13.5), quote potential (*18
 
 Tweet: "${tweet_text}"`;
   }
-  return `DETAILED MODE - X ALGORITHM ANALYSIS (OFFICIAL):
+  return `${formatContext}
+
+DETAILED MODE - X ALGORITHM ANALYSIS (OFFICIAL):
 
 Analyze using X's Phoenix transformer model: 15 predicted actions, official weights, engagement sequences, trend alignment.
 
