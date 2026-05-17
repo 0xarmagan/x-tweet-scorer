@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TweetInput } from './components/TweetInput';
 import { ScoreCard } from './components/ScoreCard';
 import { LoadingSpinner } from './components/LoadingSpinner';
-import { AnalysisResult } from '@/lib/types';
+import { AnalysisResult, TweetFormat } from '@/lib/types';
 
 export default function Home() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -23,7 +23,7 @@ export default function Home() {
     setLoading(false);
   };
 
-  const handleAnalyze = async (tweet: string, mode: 'simple' | 'detailed') => {
+  const handleAnalyze = async (tweet: string, mode: 'simple' | 'detailed', format: TweetFormat) => {
     setLoading(true);
     setError(null);
     setResult(null);
@@ -36,7 +36,7 @@ export default function Home() {
       const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tweet_text: tweet, mode }),
+        body: JSON.stringify({ tweet_text: tweet, mode, format }),
         signal: controller.signal,
       });
 
